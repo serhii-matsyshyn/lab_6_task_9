@@ -84,7 +84,7 @@ def get_words(filename: str, letters: list) -> list:
 def check_user_words(user_words: List[str],
                      language_part: str,
                      letters: List[str],
-                     dict_of_words: List[tuple]) -> Tuple[List[str]]:
+                     dict_of_words: List[tuple]) -> tuple:
     """ checks the words entered by the user
     (it is given a user_words - a list of words),
     using a list of letters from which to start words (list of letters),
@@ -106,8 +106,38 @@ def check_user_words(user_words: List[str],
     :return: A list of correct user words and
     a list of words that the user missed
     :rtype: Tuple[List[str]]
+
+    >>> print(check_user_words(['брати', 'мити', '', 'писати', 'тест', '123'],\
+"verb", ['р', 'х', 'б', 'ц', 'м'], get_words("base.lst", ['р', 'х', 'б', 'ц', 'м'])))
+    (['брати', 'мити'], ['бгати', 'бити', 'бігти', 'брити', 'буяти', \
+'мати', 'маяти', 'мерти', 'мести', 'мжити', 'мліти', 'мріти', 'мчати',\
+ "м'яти", 'раяти', 'рвати', 'ревти', 'ректи', 'ржати', 'рити', 'роїти', 'рости', 'хляти'])
     """
-    pass
+    correct_words = []
+
+    dict_of_words_dict = dict(dict_of_words)
+
+    for word in user_words:
+        if dict_of_words_dict.get(word) == language_part:
+            correct_words.append(word)
+
+    more_words = [word for word in dict_of_words_dict.keys()
+                  if ((word not in correct_words) and
+                      (word[0] in letters) and
+                      (dict_of_words_dict[word] == language_part))]
+
+    return correct_words, more_words
+
+
+def get_user_words() -> List[str]:
+    """ Gets words from user input and returns a list with these words.
+    Usage: enter a word or press ctrl+d to finish.
+
+    :return: list with words
+    :rtype: List[str]
+    """
+    words_input = input("Enter the words (lowercase, in Ukrainian) separated by space: ")
+    return list(set(words_input.split()))
 
 
 def main():
@@ -115,12 +145,24 @@ def main():
     Main function of the game
     """
     game_grid = generate_grid()
-    print(game_grid)
+    print("The game grid:", game_grid)
     language_parts = ["noun", "verb", "adjective", "adverb"]
     language_part = random.choice(language_parts)
-    print(language_part)
+    print("Language part:", language_part)
     all_words_from_dictionary = get_words("base.lst", game_grid)
-    print(all_words_from_dictionary)
+    user_words = get_user_words()
+
+    correct_words, more_words = check_user_words(user_words,
+                                                 language_part,
+                                                 game_grid,
+                                                 all_words_from_dictionary)
+    print("Correct words:")
+    for word in correct_words:
+        print(word)
+
+    print("More words:", )
+    for word in more_words:
+        print(word)
 
 
 if __name__ == '__main__':

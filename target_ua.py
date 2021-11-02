@@ -32,12 +32,11 @@ def generate_grid() -> List[str]:
                 'ґ']
 
     game_grid = []
-    counter = 0
-    while counter < 5:
+    while len(game_grid) < 5:
         randomized_letter = random.choice(alphabet)
         if randomized_letter not in game_grid:
             game_grid.append(randomized_letter)
-            counter += 1
+
     return game_grid
 
 

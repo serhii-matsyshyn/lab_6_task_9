@@ -14,10 +14,7 @@ and begin with one of the generated letters.
 """
 
 from typing import List
-from typing import Tuple
-from typing import Any
 import random
-import string
 
 
 def generate_grid() -> List[str]:
@@ -71,9 +68,9 @@ def get_words(filename: str, letters: list) -> list:
             if (len(word) <= 5) and (len(word) > 0) and (word[0] in letters):
                 word_property = " ".join(i for i in word_property if i)
                 if not any(bad_part in word_property for bad_part in bad_types):
-                    for part in language_parts.keys():
+                    for part, language_part in language_parts.items():
                         if part in word_property:
-                            word_property = language_parts[part]
+                            word_property = language_part
                             break
 
                     all_words.append((word, word_property))
@@ -121,10 +118,10 @@ def check_user_words(user_words: List[str],
         if dict_of_words_dict.get(word) == language_part:
             correct_words.append(word)
 
-    more_words = [word for word in dict_of_words_dict.keys()
+    more_words = [word for (word, language_part_for_word) in dict_of_words_dict.items()
                   if ((word not in correct_words) and
                       (word[0] in letters) and
-                      (dict_of_words_dict[word] == language_part))]
+                      (language_part_for_word == language_part))]
 
     return correct_words, more_words
 

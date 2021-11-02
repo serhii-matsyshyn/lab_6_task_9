@@ -144,11 +144,16 @@ def main():
     """
     Main function of the game
     """
+    print("A game that will help students learn Ukrainian \
+words that belong to different parts of speech")
+
     game_grid = generate_grid()
-    print("The game grid:", game_grid)
+    print("The game grid:", ' '.join(game_grid))
+
     language_parts = ["noun", "verb", "adjective", "adverb"]
     language_part = random.choice(language_parts)
     print("Language part:", language_part)
+
     all_words_from_dictionary = get_words("base.lst", game_grid)
     user_words = get_user_words()
 

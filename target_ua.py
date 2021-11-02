@@ -113,16 +113,20 @@ def check_user_words(user_words: List[str],
  """
     correct_words = []
 
-    dict_of_words_dict = dict(dict_of_words)
+    dict_of_words_dict = {}
+    for word, part in dict_of_words:
+        qw = dict_of_words_dict.get(word, [])
+        qw.append(part)
+        dict_of_words_dict[word] = qw
 
     for word in user_words:
-        if dict_of_words_dict.get(word) == language_part:
+        if language_part in dict_of_words_dict.get(word, []):
             correct_words.append(word)
 
     more_words = [word for (word, language_part_for_word) in dict_of_words_dict.items()
                   if ((word not in correct_words) and
                       (word[0] in letters) and
-                      (language_part_for_word == language_part))]
+                      (language_part in language_part_for_word))]
 
     return correct_words, more_words
 

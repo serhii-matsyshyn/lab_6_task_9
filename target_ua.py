@@ -28,10 +28,14 @@ def generate_grid() -> List[str]:
     :return: A list of generated letters (5 unique letters)
     :rtype: List[str]
     """
-    pass
+    alphabet = list('абвгґдеєжзиіїйклмнопрстуфхцчшщьюя')
+    random.shuffle(alphabet)
+    game_grid = alphabet[:5]
+
+    return game_grid
 
 
-def get_words(filename: str, letters: Any[list, str]) -> list:
+def get_words(filename: str, letters: list) -> list:
     """ Reads the dictionary file and
     returns the list of tuples: the word as part of the language.
     Parts of speech to be considered: "noun", "verb", "adjective", "adverb".
@@ -42,8 +46,39 @@ def get_words(filename: str, letters: Any[list, str]) -> list:
     :type letters: list, str
     :return: the list of tuples: the word as part of the language
     :rtype: list
+
+    >>> print(get_words("base.lst", ['я'])[:10])
+    [('ябеда', 'noun'), ('яв', 'noun'), ('ява', 'noun'), \
+('явити', 'verb'), ('явище', 'noun'), ('явір', 'noun'), \
+('явка', 'noun'), ('явний', 'adjective'), ('яга', 'noun'), \
+('ягель', 'noun')]
     """
-    pass
+
+    language_parts = {"/n": "noun",
+                      "/v": "verb",
+                      "noun": "noun",
+                      "adj": "adjective",
+                      "adv": "adverb",
+                      "n": "noun",
+                      "v": "verb",
+                      }
+    bad_types = ['intj', 'noninfl']
+    all_words = []
+    with open(filename, encoding='utf8') as file:
+        for line in file.readlines():
+            word, *word_property = (line.rstrip().lower().split(' '))
+
+            if (len(word) <= 5) and (len(word) > 0) and (word[0] in letters):
+                word_property = " ".join(i for i in word_property if i)
+                if not any(bad_part in word_property for bad_part in bad_types):
+                    for part in language_parts.keys():
+                        if part in word_property:
+                            word_property = language_parts[part]
+                            break
+
+                    all_words.append((word, word_property))
+
+    return all_words
 
 
 def check_user_words(user_words: List[str],
@@ -79,7 +114,13 @@ def main():
     """
     Main function of the game
     """
-    pass
+    game_grid = generate_grid()
+    print(game_grid)
+    language_parts = ["noun", "verb", "adjective", "adverb"]
+    language_part = random.choice(language_parts)
+    print(language_part)
+    all_words_from_dictionary = get_words("base.lst", game_grid)
+    print(all_words_from_dictionary)
 
 
 if __name__ == '__main__':

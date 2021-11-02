@@ -52,14 +52,15 @@ def get_words(filename: str, letters: list) -> list:
     """
 
     language_parts = {"/n": "noun",
-                      "/v": "verb",
                       "noun": "noun",
                       "adj": "adjective",
+                      "/v": "verb",
+                      "verb": "verb",
                       "adv": "adverb",
                       "n": "noun",
                       "v": "verb",
                       }
-    bad_types = ['intj', 'noninfl']
+    bad_types = ['intj', 'noninfl', '/n2adj']
     all_words = []
     with open(filename, encoding='utf8') as file:
         for line in file.readlines():
@@ -109,7 +110,7 @@ def check_user_words(user_words: List[str],
     (['брати', 'мити'], ['бгати', 'бити', 'бігти', 'брити', 'буяти', \
 'мати', 'маяти', 'мерти', 'мести', 'мжити', 'мліти', 'мріти', 'мчати',\
  "м'яти", 'раяти', 'рвати', 'ревти', 'ректи', 'ржати', 'рити', 'роїти', 'рости', 'хляти'])
-    """
+ """
     correct_words = []
 
     dict_of_words_dict = dict(dict_of_words)

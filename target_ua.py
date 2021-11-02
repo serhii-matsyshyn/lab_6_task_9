@@ -25,10 +25,19 @@ def generate_grid() -> List[str]:
     :return: A list of generated letters (5 unique letters)
     :rtype: List[str]
     """
-    alphabet = list('абвгґдеєжзиіїйклмнопрстуфхцчшщьюя')
-    random.shuffle(alphabet)
-    game_grid = alphabet[:5]
+    alphabet = ['а', 'б', 'в', 'г', 'д', 'е', 'ж', 'з',
+                'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п',
+                'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч',
+                'ш', 'щ', 'ь', 'ю', 'я', 'є', 'і', 'ї',
+                'ґ']
 
+    game_grid = []
+    counter = 0
+    while counter < 5:
+        randomized_letter = random.choice(alphabet)
+        if randomized_letter not in game_grid:
+            game_grid.append(randomized_letter)
+            counter += 1
     return game_grid
 
 
@@ -115,9 +124,9 @@ def check_user_words(user_words: List[str],
 
     dict_of_words_dict = {}
     for word, part in dict_of_words:
-        qw = dict_of_words_dict.get(word, [])
-        qw.append(part)
-        dict_of_words_dict[word] = qw
+        list_new = dict_of_words_dict.get(word, [])
+        list_new.append(part)
+        dict_of_words_dict[word] = list_new
 
     for word in user_words:
         if language_part in dict_of_words_dict.get(word, []):
